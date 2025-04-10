@@ -1,40 +1,113 @@
 #include <stdio.h>
 
-// Desafio Batalha Naval - MateCheck
-// Este código inicial serve como base para o desenvolvimento do sistema de Batalha Naval.
-// Siga os comentários para implementar cada parte do desafio.
+#define LINHAS 10
+#define COLUNAS 10
+#define NAVIO 3
 
 int main() {
-    // Nível Novato - Posicionamento dos Navios
-    // Sugestão: Declare uma matriz bidimensional para representar o tabuleiro (Ex: int tabuleiro[5][5];).
-    // Sugestão: Posicione dois navios no tabuleiro, um verticalmente e outro horizontalmente.
-    // Sugestão: Utilize `printf` para exibir as coordenadas de cada parte dos navios.
+    int tabuleiro[LINHAS][COLUNAS] = {0};
+    int i;
 
-    // Nível Aventureiro - Expansão do Tabuleiro e Posicionamento Diagonal
-    // Sugestão: Expanda o tabuleiro para uma matriz 10x10.
-    // Sugestão: Posicione quatro navios no tabuleiro, incluindo dois na diagonal.
-    // Sugestão: Exiba o tabuleiro completo no console, mostrando 0 para posições vazias e 3 para posições ocupadas.
+    // --- 1. NAVIO HORIZONTAL ---
+    int linhaH = 8, colunaH = 3;
+    int podeColocarH = 1;
 
-    // Nível Mestre - Habilidades Especiais com Matrizes
-    // Sugestão: Crie matrizes para representar habilidades especiais como cone, cruz, e octaedro.
-    // Sugestão: Utilize estruturas de repetição aninhadas para preencher as áreas afetadas por essas habilidades no tabuleiro.
-    // Sugestão: Exiba o tabuleiro com as áreas afetadas, utilizando 0 para áreas não afetadas e 1 para áreas atingidas.
+    if (colunaH + NAVIO - 1 < COLUNAS) {
+        for (i = 0; i < NAVIO; i++) {
+            if (tabuleiro[linhaH][colunaH + i] != 0) {
+                podeColocarH = 0;
+                break;
+            }
+        }
 
-    // Exemplos de exibição das habilidades:
-    // Exemplo para habilidade em cone:
-    // 0 0 1 0 0
-    // 0 1 1 1 0
-    // 1 1 1 1 1
-    
-    // Exemplo para habilidade em octaedro:
-    // 0 0 1 0 0
-    // 0 1 1 1 0
-    // 0 0 1 0 0
+        if (podeColocarH) {
+            for (i = 0; i < NAVIO; i++) {
+                tabuleiro[linhaH][colunaH + i] = 3;
+            }
+        } else {
+            printf("Erro: Sobreposição no navio horizontal!\n");
+        }
+    } else {
+        printf("Erro: Navio horizontal fora do limite!\n");
+    }
 
-    // Exemplo para habilidade em cruz:
-    // 0 0 1 0 0
-    // 1 1 1 1 1
-    // 0 0 1 0 0
+    // --- 2. NAVIO VERTICAL ---
+    int linhaV = 5, colunaV = 7;
+    int podeColocarV = 1;
+
+    if (linhaV + NAVIO - 1 < LINHAS) {
+        for (i = 0; i < NAVIO; i++) {
+            if (tabuleiro[linhaV + i][colunaV] != 0) {
+                podeColocarV = 0;
+                break;
+            }
+        }
+
+        if (podeColocarV) {
+            for (i = 0; i < NAVIO; i++) {
+                tabuleiro[linhaV + i][colunaV] = 3;
+            }
+        } else {
+            printf("Erro: Sobreposição no navio vertical!\n");
+        }
+    } else {
+        printf("Erro: Navio vertical fora do limite!\n");
+    }
+
+    // --- 3. NAVIO DIAGONAL PRINCIPAL (↘️) ---
+    int linhaD1 = 0, colunaD1 = 0;
+    int podeColocarD1 = 1;
+
+    if (linhaD1 + NAVIO - 1 < LINHAS && colunaD1 + NAVIO - 1 < COLUNAS) {
+        for (i = 0; i < NAVIO; i++) {
+            if (tabuleiro[linhaD1 + i][colunaD1 + i] != 0) {
+                podeColocarD1 = 0;
+                break;
+            }
+        }
+
+        if (podeColocarD1) {
+            for (i = 0; i < NAVIO; i++) {
+                tabuleiro[linhaD1 + i][colunaD1 + i] = 3;
+            }
+        } else {
+            printf("Erro: Sobreposição no navio diagonal principal!\n");
+        }
+    } else {
+        printf("Erro: Navio diagonal principal fora do limite!\n");
+    }
+
+    // --- 4. NAVIO DIAGONAL SECUNDÁRIA (↙️) ---
+    int linhaD2 = 0, colunaD2 = 9;
+    int podeColocarD2 = 1;
+
+    if (linhaD2 + NAVIO - 1 < LINHAS && colunaD2 - (NAVIO - 1) >= 0) {
+        for (i = 0; i < NAVIO; i++) {
+            if (tabuleiro[linhaD2 + i][colunaD2 - i] != 0) {
+                podeColocarD2 = 0;
+                break;
+            }
+        }
+
+        if (podeColocarD2) {
+            for (i = 0; i < NAVIO; i++) {
+                tabuleiro[linhaD2 + i][colunaD2 - i] = 3;
+            }
+        } else {
+            printf("Erro: Sobreposição no navio diagonal secundária!\n");
+        }
+    } else {
+        printf("Erro: Navio diagonal secundária fora do limite!\n");
+    }
+
+    // --- EXIBE O TABULEIRO ---
+    printf("\nTabuleiro Final:\n");
+    for (int l = 0; l < LINHAS; l++) {
+        for (int c = 0; c < COLUNAS; c++) {
+            printf("%d ", tabuleiro[l][c]);
+        }
+        printf("\n");
+    }
 
     return 0;
 }
